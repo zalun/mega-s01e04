@@ -30,6 +30,27 @@ Closing one, with the closing comment from AGENTS.md:
 gh issue close <n> -c "<closing comment>"
 ```
 
+## Issue shape (agreed 2026-10-29)
+
+Every issue in this repo carries, in this order:
+
+```md
+Source: plan.md § <n>
+
+## Scope
+<what the worker changes, from the plan section>
+
+## Done when
+<the plan's checkable condition>
+
+## Blocked by
+<#n, or — >
+```
+
+- Label: `plan:<plan name from plan.md frontmatter>`, e.g. `plan:morning-digest`.
+- A step that waits on someone outside the lane (a reviewer, a person) stays open after it is sent and closes only when they confirm. Steps that depend on it are blocked by it.
+- Workers' commits say `refs #n`, not `closes #n`: the coordinator closes the issue with the closing comment from AGENTS.md after the merge.
+
 ## No `gh`
 
 Steps 1–4 hold either way. GitHub reachable another way (a connector, the REST API, the web UI):
