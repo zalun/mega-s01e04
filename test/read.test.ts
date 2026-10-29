@@ -33,13 +33,14 @@ describe('readNight on runs/2026-10-28.jsonl', () => {
       owner: 'rook',
       runs: 4,
       retries: 3,
+      fails: 0,
       lastStatus: 'ok',
       lastError: 'upstream 503',
       firstAt: '2026-10-29T01:30:00+01:00',
       lastAt: '2026-10-29T01:37:00+01:00',
     });
     const backup = night!.rows.find((r) => r.job === 'notes/backup');
-    expect(backup).toMatchObject({ lastStatus: 'fail', lastError: 'quota exceeded' });
+    expect(backup).toMatchObject({ fails: 1, lastStatus: 'fail', lastError: 'quota exceeded' });
     const sync = night!.rows.find((r) => r.job === 'lane/sync');
     expect(sync).toMatchObject({ runs: 8, retries: 1, firstAt: '2026-10-28T23:00:06+01:00' });
   });

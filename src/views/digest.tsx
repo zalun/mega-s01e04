@@ -3,13 +3,14 @@ import type { DigestRow, Night } from '../digest/types.js';
 const dash = '—';
 
 function Row({ row }: { row: DigestRow }) {
-  const flagged = row.retries >= 3 || row.lastStatus === 'fail';
+  const flagged = row.retries >= 3 || row.fails > 0;
   return (
     <tr class={flagged ? 'warn' : undefined}>
       <td>{flagged ? '! ' : ''}{row.job}</td>
       <td>{row.owner ?? dash}</td>
       <td>{row.runs}</td>
       <td>{row.retries}</td>
+      <td>{row.fails}</td>
       <td>{row.lastStatus}</td>
       <td>{row.lastError ?? dash}</td>
       <td>{row.firstAt}</td>
@@ -33,7 +34,7 @@ export function DigestPage({ night }: { night: Night }) {
         <table>
           <thead>
             <tr>
-              <th>job</th><th>owner</th><th>runs</th><th>retries</th>
+              <th>job</th><th>owner</th><th>runs</th><th>retries</th><th>fails</th>
               <th>last status</th><th>last error</th><th>first</th><th>last</th>
             </tr>
           </thead>
@@ -44,7 +45,7 @@ export function DigestPage({ night }: { night: Night }) {
           </tbody>
         </table>
       )}
-      <p class="mute">! = 3 or more retries, or the last run failed</p>
+      <p class="mute">! = 3 or more retries, or any failed run</p>
     </>
   );
 }
